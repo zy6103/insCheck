@@ -1,0 +1,94 @@
+使用帮助
+
+功能：
+对linux,aix,oracle,db2进行巡检，对巡检结果生成excel文件。
+
+目录结构：
+    ins_check:
+        conf:\
+            config.py                           参数配置文件
+        core:
+            analyze_module:                     结果分析模块
+                db2_result_analyze.py           db2结果分析模块
+                linux_result_analyze.py         linux结果分析模块
+                oracle_result_analyze.py        oracle结果分析模块
+            base_function.py                    基础功能函数，各个检测功能的分离
+            generic_run_cmd.py                  各个检测功能执行函数
+            main.py                             主函数
+        result:                                 执行结果原始数据存放目录
+            db2:
+            linux
+            oracle
+        xxx.xls                                 执行结果统计汇总xls表文件
+        server_list:\                           检测服务器列表文件
+            db2-server:
+            linux-server:
+            oracle-server:
+        test:\                                  模块测试目录
+        utils:
+            db2_module.py                       db2数据库连接模块
+            excel_read_write.py                 xls文件读写模块
+            oracle_module.py                    oracle数据库连接模块
+            remote_run_cmd.py                   linux,aix系统连接模块
+            response.py                         通用类模块
+            generic.py                          通用功能函数模块
+        run.py                                  运行入口
+
+环境需求：
+系统：centos6或者7 64bit系统。 另说明：如果openssl版本为1.0.0，请升级到openssl.1.0.1以上版本，否则paramiko的ssh协助不支持
+开发环境： python3
+python必要模块：paramiko,cx_Oracle,ibm_db,xlrd,xlwt
+
+模块安装方法：
+    首先安装好python3后，使用pip3安装模块
+    pip3 install paramiko
+    pip3 install cx-Oracle==6.4.1,wheel
+    pip3 install ibm_db # （ibm_db-3.0.2，安装gcc
+    pip3 install xlrd,xlwt
+
+注意：当前主机由于需要连接oracle，所以需要安装oracle客户端，如下：
+oracle-instantclient11.2-basic-11.2.0.4.0-1.x86_64.rpm
+oracle-instantclient11.2-sqlplus-11.2.0.4.0-1.x86_64.rpm
+账号环境配置：
+export ORACLE_BASE=/usr/lib/oracle
+export ORACLE_HOME=$ORACLE_BASE/11.2/client64
+export PATH=$PATH:$ORACLE_HOME/bin
+export LD_LIBRARY_PATH=$ORACLE_HOME/lib
+
+
+运行原理：
+    使用python3绝对路径运行，比如python3位置(/opt/python3/bin/python3), 运行： /opt/python3/bin/python3 run.py， 会出现
+一个菜单，提示选择选件选项，输入对应的序列号后，程序会根据巡检选项，自动读取 server_list目录中的对应文件列表，根据文件列表
+中的系统信息，进行多线程并发执行，执行后的初始结果会存放到 result下对应的目录中，然后数据会通过analyze_module中对应的模块
+进行数据自动分析处理。最后将处理后的结果统一汇总输出到result目录下的一个excel文件中。
+
+服务器列表对应文件格式说明：
+文件名：linux-server
+第一列：服务器IP地址
+第二列：系统版本，这个要根据这里写为固定的（
+                RHEL6   包含（redhat6,centos6)
+                RHEL7   包含（redhat7,centos7)
+                SUSE11  包含（suse11)
+                SUSE12  包含（suse12)
+                AIX     包含（aix)
+第三列：系统登录账号
+第四列：登录账号密码
+第五列：SSH连接端口
+
+文件名：oracle-server
+第一列：服务器IP地址
+第二列：oracle数据库的访问账号
+第三列：oracle数据库的访问账号密码
+第四列：服务名
+第五列：oracle端口（1521）
+
+文件名：db2-server
+第一列：服务器IP地址
+第二列：db2数据库的访问账号
+第三列：db2数据库的访问账号密码
+第四列：数据库名
+第五列：db2端口
+
+遇到的问题：
+1：安装ibm_db后，import 加载报错
+ImportError: /lib64/libc.so.6: version `GLIBC_2.14' not found (required by /opt/python3/lib/python3.6/site-packages/clidriver/lib/libdb2.so.1)
