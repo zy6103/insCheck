@@ -33,6 +33,7 @@
             response.py                         通用类模块
             generic.py                          通用功能函数模块
         run.py                                  运行入口
+        soft-bak                                软件备份目录
 
 环境需求：
 系统：centos6或者7 64bit系统。 另说明：如果openssl版本为1.0.0，请升级到openssl.1.0.1以上版本，否则paramiko的ssh协助不支持
@@ -42,18 +43,8 @@ python必要模块：paramiko,cx_Oracle,ibm_db,xlrd,xlwt
 模块安装方法：
     首先安装好python3后，使用pip3安装模块
     pip3 install paramiko
-    pip3 install cx-Oracle==6.4.1,wheel
-    pip3 install ibm_db # （ibm_db-3.0.2，安装gcc
     pip3 install xlrd,xlwt
-
-注意：当前主机由于需要连接oracle，所以需要安装oracle客户端，如下：
-oracle-instantclient11.2-basic-11.2.0.4.0-1.x86_64.rpm
-oracle-instantclient11.2-sqlplus-11.2.0.4.0-1.x86_64.rpm
-账号环境配置：
-export ORACLE_BASE=/usr/lib/oracle
-export ORACLE_HOME=$ORACLE_BASE/11.2/client64
-export PATH=$PATH:$ORACLE_HOME/bin
-export LD_LIBRARY_PATH=$ORACLE_HOME/lib
+    关于：oracle和db2的安装请查看：soft-bak目录内有安装文档
 
 
 运行原理：
@@ -66,6 +57,7 @@ export LD_LIBRARY_PATH=$ORACLE_HOME/lib
 文件名：linux-server
 第一列：服务器IP地址
 第二列：系统版本，这个要根据这里写为固定的（
+                RHEL5   包含（redhat5,centos5)
                 RHEL6   包含（redhat6,centos6)
                 RHEL7   包含（redhat7,centos7)
                 SUSE11  包含（suse11)
@@ -90,5 +82,3 @@ export LD_LIBRARY_PATH=$ORACLE_HOME/lib
 第五列：db2端口
 
 遇到的问题：
-1：安装ibm_db后，import 加载报错
-ImportError: /lib64/libc.so.6: version `GLIBC_2.14' not found (required by /opt/python3/lib/python3.6/site-packages/clidriver/lib/libdb2.so.1)
