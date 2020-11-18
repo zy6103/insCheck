@@ -4,7 +4,8 @@
 import os
 # 根目录
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+# 并发线程数，设置为CPU内核数
+THREAD_NUM = 6
 ############### LINUX, AIX config info #############################
 # 分析结果汇总目录
 ANALYZE_RESULT_DIR = os.path.join(ROOT_DIR, 'result')
