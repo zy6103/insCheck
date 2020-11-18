@@ -85,10 +85,10 @@ def ORACLE(resp):
             all_num = len(task_list)
             count = 0
             for task_result in as_completed(task_list):
-                if task_result.done():
+                if task_result.done():  # 判断任务是否完成
                     count += 1
-                    progress_bar(count,all_num)
-                    task_result.result()
+                    progress_bar(count,all_num)  # 任务执行进度条打印
+                    task_result.result()  # 获取任务结果
 
         # 执行结果进行写xls文件
         print('\nstart create result file:%s' % report_file)

@@ -12,5 +12,5 @@ def progress_bar(curr_num,all_num):
     :return:
     '''
     percent = curr_num / all_num
-    sys.stdout.write("\r{1}".format('%.2f%%' % (percent * 100)))
+    sys.stdout.write("巡检完成进度：\r{1}".format('%.2f%%' % (percent * 100)))
     sys.stdout.flush()
